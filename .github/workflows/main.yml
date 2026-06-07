@@ -1,4 +1,4 @@
-name: Android Build
+name: Build APK
 
 on:
   workflow_dispatch:
@@ -8,14 +8,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Show files
-        run: find .
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
-      - name: Upload project files
+      - uses: android-actions/setup-android@v3
+
+      - name: Unzip project
+        run: |
+          unzip ArizonaMobile_Project.zip -d outer
+          unzip outer/ArizonaMobile.zip -d project
+
+      - name: Build APK
+        run: |
+          cd project/ArizonaMobile
+          chmod +x gradlew || true
+          ./gradlew assembleDebug
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: ArizonaMobile_Project
-          path: .
+          name: ArizonaMobile-APK
+          path: project/ArizonaMobile/app/build/outputs/apk/debug/*.apk
