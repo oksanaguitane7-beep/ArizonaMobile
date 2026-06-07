@@ -8,10 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Show files
-        run: ls -la
+        run: find .
 
-      - name: Show repository tree
-        run: find . -type f
+      - name: Upload project files
+        uses: actions/upload-artifact@v4
+        with:
+          name: ArizonaMobile_Project
+          path: .
