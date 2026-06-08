@@ -20,11 +20,11 @@ jobs:
       - name: Unzip project
         run: |
           unzip ArizonaMobile_Project.zip -d outer
-          unzip outer/ArizonaMobile.zip -d project
+          
 
       - name: Build APK
         run: |
-          cd project/ArizonaMobile
+          cd outer/ArizonaMobile
           chmod +x gradlew || true
           ./gradlew assembleDebug
 
@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ArizonaMobile-APK
-          path: project/ArizonaMobile/app/build/outputs/apk/debug/*.apk
+          path: outer/ArizonaMobile/app/build/outputs/apk/debug/*.apk
